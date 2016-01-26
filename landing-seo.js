@@ -55,7 +55,7 @@
 
 				getObject("[data-seotitle]").each(function() {
 					var $block = $(this);
-					if(sc >= ($block.data("top") - 80) && sc <= ($block.data("bottom") + 80)) {
+					if(sc >= ($block.data("top") - 80 - settings.offsetTop) && sc <= ($block.data("bottom") + 80 - settings.offsetTop)) {
 						if(!$block.data("current")) {
 							getObject("[data-seotitle]").data("current", false);
 							$block.data("current", true);
@@ -149,7 +149,10 @@
 				init: function(options) {
 					
 					settings = $.extend({
+						offsetTop: 0, // Отступ сверху
+						
 						yaCounter: null, // Код счетчика Яндекс.Метрики
+						addGoogleAnalytics: false, // Код GA
 						
 						onBlockChange: function() {} // После смены блока
 					}, options);
@@ -162,6 +165,17 @@
 					
 					// Расположение текущего блока
 					checkBlocks(parseInt(getObject("window").scrollTop()), parseInt(getObject("window").height()));
+				},
+				
+				goToBlock: function(url) {
+					getObject("[data-seotitle]").each(function() {
+						var $block = $(this);
+						
+						if($block.data("seourl") && $block.data("seourl") == url) {
+							getObject("window").scrollTop($block.data("top") - settings.offsetTop);
+							return false;
+						}
+					});
 				}
 				
 			}
@@ -169,6 +183,9 @@
 		})();
 		
 		landingSeo.init(options);
+		
+		// Скроллирование к нужному блоку (если содержится в аресной строке)
+		landingSeo.goToBlock(window.location.pathname);
 
 		// Получение размеров в начале и при смене размера браузера
 		landingSeo.getObject("window").on("resize", function() {

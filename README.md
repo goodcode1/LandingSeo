@@ -37,10 +37,13 @@ http://optimization.html-atlantis.ru
 ```
 
 Добавить перенаправления в .htaccess (для обеспечения работы ссылок)
-
 ```
 RewriteEngine on
-RewriteRule ^/advantages/$ http://optimization.html-atlantis.ru [L,R=301]
+RewriteBase /
+RewriteRule ^advantages/$ /index.php [L]
+RewriteRule ^help/$ /index.php [L]
+RewriteRule ^about/$ /index.php [L]
+RewriteRule ^feedback/$ /index.php [L]
 ```
 
 И вызвать плагин
@@ -60,7 +63,9 @@ $.landingSeo(options)
 
 ### JavaScript
 Также можно передать некоторые параметры в момент вызова плагина
+`offsetTop`: отступ сверху (если используется липкая шапка)
 `yaCounter`: код счетчика Яндекс.Метрика
+`addGoogleAnalytics`: отправлять информацию о просмотре в Google Analytics
 `onBlockChange`: вызывается в момент смены блока при прокрутке
 
 ## Обратная связь и помощь в настройке
